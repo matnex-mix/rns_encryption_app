@@ -1,0 +1,61 @@
+name: encryption_demo2
+
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+
+isar_version: &isar_version 3.1.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  rust_builder:
+    path: rust_builder
+  flutter_rust_bridge: 2.0.0-dev.22
+  get: ^4.6.6
+  isar: *isar_version
+  isar_flutter_libs: *isar_version # contains Isar Core
+  path_provider: ^2.1.1
+  crypto: ^3.0.3
+  flutter_riverpod: ^2.4.9
+  mailer: ^6.0.1
+  flutter_contacts: ^1.1.7+1
+  #  flutter_sms: ^2.3.3
+  #  sms_advanced: ^1.1.0
+  sms_advanced:
+    git:
+      url: https://github.com/EddieKamau/sms_advanced.git
+      ref: master
+  permission_handler: ^11.1.0
+  encrypt: ^5.0.3
+  dart_des: ^1.0.2
+  tripledes_nullsafety: ^1.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+  integration_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+  isar_generator: *isar_version
+  build_runner: any
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: false
+  image_path: "assets/images/icon.jpg"
+  min_sdk_android: 23
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
