@@ -1,6 +1,7 @@
 import 'package:encryption_demo2/models/user.dart';
 import 'package:encryption_demo2/pages/home/dashboard.dart';
 import 'package:encryption_demo2/providers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
@@ -29,6 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final registerPassword = TextEditingController();
   final registerPassword2 = TextEditingController();
   final registerName = TextEditingController();
+
+  bool showPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       controller: loginPassword,
                       keyboardType: TextInputType.visiblePassword,
-                      obscureText: true,
+                      obscureText: !showPassword,
                       validator: (value) => value?.isEmpty != true ? null : 'Password is required',
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
@@ -126,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
-                          hintText: 'Display Name'
+                          hintText: 'Display Name',
                       ),
                       controller: registerName,
                       keyboardType: TextInputType.text,
@@ -136,22 +139,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
-                          hintText: 'Password'
+                          hintText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon( showPassword ? CupertinoIcons.eye_slash : CupertinoIcons.eye),
+                            onPressed: () => setState(() => showPassword = !showPassword),
+                          )
                       ),
                       controller: registerPassword,
                       keyboardType: TextInputType.visiblePassword,
-                      obscureText: true,
+                      obscureText: !showPassword,
                       validator: (value) => value?.isEmpty != true ? (GetUtils.isLengthBetween(value!, 6, 20) ? null : 'Invalid password') : 'Password is required',
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
-                          hintText: 'Password Confirmation'
+                          hintText: 'Password Confirmation',
+                        suffixIcon: IconButton(
+                          icon: Icon( showPassword ? CupertinoIcons.eye_slash : CupertinoIcons.eye),
+                          onPressed: () => setState(() => showPassword = !showPassword),
+                        )
                       ),
                       controller: registerPassword2,
                       keyboardType: TextInputType.visiblePassword,
-                      obscureText: true,
+                      obscureText: !showPassword,
                       validator: (value) => value?.isEmpty != true ? (value != registerPassword.text ? 'Passwords do not match' : null) : 'Password is required',
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
@@ -177,8 +188,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           await Future.delayed(const Duration(seconds: 2));
                           Get.offAll(const DashboardScreen());
                         } catch (e) {
-                          print(e);
+                          // print(e);
                           Navigator.pop(context);
+                          Get.snackbar("Error", "Could not register, please check the information and try again", duration: const Duration(seconds: 10));
                         }
                       },
                       child: Text(
