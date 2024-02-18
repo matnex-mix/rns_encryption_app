@@ -1,9 +1,15 @@
+import 'dart:io';
+
+import 'package:encryption_demo2/widgets.dart';
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ComparationResult extends StatefulWidget {
-  final List<Map<String, Map<String, dynamic>>> result;
+  List<Map<String, Map<String, dynamic>>> result;
 
-  const ComparationResult({Key? key, required this.result}) : super(key: key);
+  ComparationResult({Key? key, required this.result}) : super(key: key);
 
   @override
   State<ComparationResult> createState() => _ComparationResultState();
@@ -65,6 +71,60 @@ class _ComparationResultState extends State<ComparationResult> {
                       ..insert(0, DataCell(Text('Encryption ($i)'))));
                   })
                 ),
+                const SizedBox(height: 50),
+                TextButton(
+                  child: Text('Export to Excel'),
+                  onPressed: ()  async {
+                    Widgets.load(dismissible: true);
+
+                    var alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+                    var excel = Excel.createExcel();
+
+                    Sheet encryptionSheet = excel['Encryption'];
+                    Sheet decryptionSheet = excel['Decryption'];
+
+                    widget.result[0] = {
+                      'Key Size:': {},
+                      ' ${widget.result[0]['details']?['keySize'] ?? 0} Bytes.': {},
+                      '': {},
+                      'Message Size:': {},
+                      '${widget.result[0]['details']?['messageSize'] ?? 0} Bytes.': {},
+                    };
+
+                    widget.result.insert(1, widget.result[1]);
+
+                    for(int i = 0; i < widget.result.length; i++){
+                      var rowLabel = i + 1;
+                      var columnLabel = 0;
+                      for(var x in widget.result[i].entries){
+                        CellStyle cellStyle = CellStyle(bold: i <= 1 && !x.key.endsWith('.'), fontFamily :getFontFamily(FontFamily.Calibri));
+
+                        encryptionSheet.cell(CellIndex.indexByString('${alphabets[columnLabel]}$rowLabel'))
+                          ..value = TextCellValue(i <= 1 ? x.key.toUpperCase() : x.value['encryption'].toString().replaceAll("s", ""))
+                          ..cellStyle = cellStyle;
+
+                        decryptionSheet.cell(CellIndex.indexByString('${alphabets[columnLabel]}$rowLabel'))
+                          ..value = TextCellValue(i <= 1 ? x.key.toUpperCase() : x.value['decryption'].toString().replaceAll("s", ""))
+                          ..cellStyle = cellStyle;
+
+                        columnLabel += 1;
+                      }
+                    }
+
+                    var fileBytes = excel.save();
+                    var directory = await getExternalStorageDirectory();
+
+                    if( fileBytes != null && directory != null ) {
+                      File("${directory.path}/export_comparison.xlsx")
+                        ..createSync(recursive: true)
+                        ..writeAsBytesSync(fileBytes);
+                    }
+
+                    Get.back();
+                    Get.snackbar("Success", "Export completed successfully");
+                  },
+                )
               ]
             ),
           ),

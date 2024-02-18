@@ -9,5 +9,5 @@ class User {
   @Index(type: IndexType.value, unique: true)
   String? email;
   String? password;
-  String? displayName;
+  String? displayName, question, answer;
 }

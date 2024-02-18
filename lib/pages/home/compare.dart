@@ -18,6 +18,22 @@ String getSeconds(int milliseconds){
   return "${(milliseconds/1000000).toPrecision(4)}s";
 }
 
+String padTo16Or24(String s){
+  int pads = 0;
+
+  if( s.length <= 16 ){
+    pads = 16 - s.length;
+  } else {
+    pads = 24 - s.length;
+  }
+
+  for(int i = 0; i < pads; i++){
+    s += " ";
+  }
+
+  return s;
+}
+
 compare (arg) async {
   await RustLib.init();
 
@@ -44,7 +60,7 @@ compare (arg) async {
           'decryption': '',
         };
 
-        final theKey = ec.Key.fromUtf8(isolatekey);
+        final theKey = ec.Key.fromUtf8(padTo16Or24(isolatekey));
         final iv = ec.IV.fromLength(16);
 
         final encrypter = ec.Encrypter(ec.AES(theKey));
@@ -67,7 +83,7 @@ compare (arg) async {
         };
 
         // final encrypter = new BlockCipher(new DESEngine(), isolatekey);
-        final encrypter = DES3(key: isolatekey.codeUnits, mode: DESMode.ECB);
+        final encrypter = DES3(key: padTo16Or24(isolatekey).codeUnits, mode: DESMode.ECB);
 
         var before = DateTime.now();
         final encrypted = encrypter.encrypt(isolateMsg.codeUnits);
@@ -173,6 +189,7 @@ class _CompareScreenState extends State<CompareScreen> {
                   keyboardType: TextInputType.text,
                   validator: (value) => value?.isEmpty != true ? (value!.length > 60 ? 'Key is too long' : null) : 'Key is required',
                   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  obscureText: true,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(

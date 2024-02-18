@@ -12,15 +12,34 @@ class SplashScreen extends StatelessWidget {
       Get.to(() => const LoginScreen());
     });
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: SizedBox(
-          height: 100,
-          width: 100,
-          child: FittedBox(
-            fit: BoxFit.contain,
-            child: Image.asset('assets/images/icon.jpg'),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Padding(
+          padding: const EdgeInsets.all(30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 150,
+                width: 150,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Image.asset('assets/images/icon.jpg'),
+                ),
+              ),
+              const SizedBox(height: 15),
+              Text(
+                'Encryption to your standard using RNS Base64',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.italic,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),

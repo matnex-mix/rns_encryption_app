@@ -10,14 +10,14 @@ import 'package:sms_advanced/sms_advanced.dart';
 import '../../src/rust/api/simple.dart';
 import '../../widgets.dart';
 
-class DecryptionScreen extends StatefulWidget {
-  const DecryptionScreen({Key? key}) : super(key: key);
+class EncryptionScreen extends StatefulWidget {
+  const EncryptionScreen({Key? key}) : super(key: key);
 
   @override
-  State<DecryptionScreen> createState() => _DecryptionScreenState();
+  State<EncryptionScreen> createState() => _EncryptionScreenState();
 }
 
-class _DecryptionScreenState extends State<DecryptionScreen> {
+class _EncryptionScreenState extends State<EncryptionScreen> {
 
   final GlobalKey<FormState> formKey = GlobalKey();
 
@@ -31,7 +31,7 @@ class _DecryptionScreenState extends State<DecryptionScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        title: Text('Decrypt Ciphertext'),
+        title: Text('Encrypt Plaintext'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -42,35 +42,41 @@ class _DecryptionScreenState extends State<DecryptionScreen> {
               children: [
                 TextFormField(
                   decoration: InputDecoration(
-                      hintText: 'Encryption Key'
+                    hintText: 'Encryption Key',
+                    counterText: key.text.length > 0 ? 'Key Size: ${key.text.length} bytes' : null,
                   ),
                   controller: key,
                   keyboardType: TextInputType.text,
                   validator: (value) => value?.isEmpty != true ? (value!.length > 60 ? 'Key is too long' : null) : 'Key is required',
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   obscureText: true,
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  decoration: InputDecoration(
-                      hintText: 'Cipher Text'
-                  ),
-                  controller: cipher,
-                  keyboardType: TextInputType.text,
-                  maxLines: 5,
-                  validator: (value) => value?.isEmpty != true ? null : 'Cipher text is required',
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  onChanged: (value) => setState((){}),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Message',
-                    fillColor: Colors.grey
+                    counterText: message.text.length > 0 ? 'Message Size: ${message.text.length} bytes' : null,
                   ),
-                  readOnly: true,
                   controller: message,
                   keyboardType: TextInputType.text,
+                  validator: (value) => value?.isEmpty != true ? null : 'Plain text is required',
+                  maxLines: 5,
+                  onChanged: (value) => setState((){}),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: 'Cipher Text',
+                    fillColor: Colors.grey,
+                    counterText: cipher.text.length > 0 ? 'Memory Size: ${cipher.text.length} bytes' : null,
+                  ),
+                  controller: cipher,
+                  keyboardType: TextInputType.text,
                   maxLines: 10,
+                  readOnly: true,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  onChanged: (value) => setState((){}),
                 ),
                 const SizedBox(height: 40),
                 TextButton(
@@ -80,9 +86,9 @@ class _DecryptionScreenState extends State<DecryptionScreen> {
                     Widgets.load(dismissible: false);
 
                     try {
-                      final plaintext = decrypt(key: key.text, ciphertext: cipher.text);
+                      final ciphertext = encrypt(key: key.text, message: message.text);
                       formKey.currentState?.reset();
-                      message.text = plaintext;
+                      cipher.text = ciphertext;
                     } on Exception catch (e) {
                       Get.snackbar("Error", "An error occurred, Please try again");
                     } finally {
@@ -90,7 +96,7 @@ class _DecryptionScreenState extends State<DecryptionScreen> {
                     }
                   },
                   child: Text(
-                    'Decrypt',
+                    'Encrypt',
                     style: TextStyle(color: Colors.white),
                   ),
                   style: ButtonStyle(

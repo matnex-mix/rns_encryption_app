@@ -78,6 +78,7 @@ class _SendSMSScreenState extends State<SendSMSScreen> {
                   keyboardType: TextInputType.text,
                   validator: (value) => value?.isEmpty != true ? (value!.length > 60 ? 'Key is too long' : null) : 'Key is required',
                   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  obscureText: true,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(

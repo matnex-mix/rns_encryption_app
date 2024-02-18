@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 
 import 'decryption.dart';
+import 'encryption.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -25,8 +26,16 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         child: ListView(
           shrinkWrap: true,
           children: [
+            SizedBox(
+              width: 150,
+              height: 150,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Image.asset('assets/images/icon.jpg'),
+              ),
+            ),
             Text('RNS + BASE64', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 25),),
-            const SizedBox(height: 100),
+            const SizedBox(height: 70),
             Text('Welcome ${user?.displayName ?? 'User'}, \nwhat would you like to do?', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),),
             const SizedBox(height: 50),
             TextButton(
@@ -40,6 +49,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             TextButton(
                 onPressed: () => Get.to(() => CompareScreen()),
                 child: Text('Compare with others')
+            ),
+            TextButton(
+                onPressed: () => Get.to(() => EncryptionScreen()),
+                child: Text('Encrypt text')
             ),
             TextButton(
                 onPressed: () => Get.to(() => DecryptionScreen()),

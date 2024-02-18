@@ -55,6 +55,7 @@ class _SendEmailState extends State<SendEmail> {
                   keyboardType: TextInputType.text,
                   validator: (value) => value?.isEmpty != true ? (value!.length > 60 ? 'Key is too long' : null) : 'Key is required',
                   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  obscureText: true,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
