@@ -13,7 +13,7 @@ fn crt(remainders: &Vec<u8>, modulos: &Vec<u8>) -> u8 {
 
     let mut i = 1;
 
-    while i < 10 {
+    while i < 100 {
         let mut factor = (factor * i) + remainders[0];
 
         // println!("{}", factor);

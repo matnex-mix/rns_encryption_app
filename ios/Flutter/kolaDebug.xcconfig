@@ -1,0 +1,6 @@
+#include "Generated.xcconfig"
+
+FLUTTER_TARGET=lib/main_kola.dart
+ASSET_PREFIX=kola
+BUNDLE_NAME=Encryption Demo
+BUNDLE_DISPLAY_NAME=Encryption Demo

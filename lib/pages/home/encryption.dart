@@ -100,7 +100,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                     style: TextStyle(color: Colors.white),
                   ),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.deepPurple),
+                    backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
                     fixedSize: MaterialStateProperty.all(const Size(150, 50)),
                   ),
                 ),

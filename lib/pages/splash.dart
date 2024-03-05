@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../flavors.dart';
 import 'auth/login.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -18,7 +19,7 @@ class SplashScreen extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(30),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
@@ -26,12 +27,12 @@ class SplashScreen extends StatelessWidget {
                 width: 150,
                 child: FittedBox(
                   fit: BoxFit.contain,
-                  child: Image.asset('assets/images/icon.jpg'),
+                  child: Image.asset(F.icon),
                 ),
               ),
               const SizedBox(height: 15),
               Text(
-                'Encryption to your standard using RNS Base64',
+                F.description,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,

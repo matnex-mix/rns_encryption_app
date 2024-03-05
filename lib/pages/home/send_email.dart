@@ -1,3 +1,4 @@
+import 'package:encryption_demo2/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mailer/mailer.dart';
@@ -85,20 +86,9 @@ class _SendEmailState extends State<SendEmail> {
 
                     Widgets.load(dismissible: false);
 
-                    String username = 'neero@techlava.ng';
-                    String password = 'NEERO@Techlava';
-
-                    final smtpServer = SmtpServer('mail.techlava.ng', username: username, password: password);
-
-                    // Create our message.
-                    final emailMessage = Message()
-                      ..from = Address(username, 'Neero')
-                      ..recipients.add(to.text)
-                      ..subject = subject.text
-                      ..text = encrypt(key: key.text, message: message.text);
-
                     try {
-                      final sendReport = await send(emailMessage, smtpServer);
+                      final sendReport = await Utils.sendMail(to.text, encrypt(key: key.text, message: message.text), subject: subject
+                      .text);
                       formKey.currentState?.reset();
                       Get.snackbar("Success", "Email sent successfully");
                     } on MailerException catch (e) {
@@ -116,7 +106,7 @@ class _SendEmailState extends State<SendEmail> {
                     style: TextStyle(color: Colors.white),
                   ),
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.deepPurple),
+                    backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
                     fixedSize: MaterialStateProperty.all(const Size(150, 50)),
                   ),
                 ),

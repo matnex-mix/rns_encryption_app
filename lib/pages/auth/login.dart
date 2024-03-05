@@ -1,11 +1,13 @@
 import 'package:encryption_demo2/models/user.dart';
 import 'package:encryption_demo2/pages/home/dashboard.dart';
+import 'package:encryption_demo2/pages/otp/select_modulo.dart';
 import 'package:encryption_demo2/providers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 
+import '../../flavors.dart';
 import '../../services/db.dart';
 import '../../src/rust/api/simple.dart';
 import '../../utilities.dart';
@@ -78,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 150,
                             child: FittedBox(
                               fit: BoxFit.contain,
-                              child: Image.asset('assets/images/icon.jpg'),
+                              child: Image.asset(F.icon),
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -121,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.pop(context);
                               } else {
                                 providerContainer.read(loggedInUserProvider.notifier).state = user;
-                                Get.offAll(const DashboardScreen());
+                                Get.offAll(F.appFlavor == Flavor.abo ? const SelectModuloScreen() : const DashboardScreen());
                               }
                             },
                             child: Text(
@@ -129,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(color: Colors.white),
                             ),
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors.deepPurple),
+                              backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
                               fixedSize: MaterialStateProperty.all(const Size(150, 50)),
                             ),
                           ),
@@ -167,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 150,
                             child: FittedBox(
                               fit: BoxFit.contain,
-                              child: Image.asset('assets/images/icon.jpg'),
+                              child: Image.asset(F.icon),
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -273,10 +275,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   return isar.users.putSync(user);
                                 });
 
-                                providerContainer.read(loggedInUserProvider.notifier).state = user..id = userId;
+                                if( F.appFlavor == Flavor.kola ) providerContainer.read(loggedInUserProvider.notifier).state = user..id = userId;
+                                await Future.delayed(const Duration(seconds: 1));
                                 Get.snackbar("Success", "Registration completed successfully");
-                                await Future.delayed(const Duration(seconds: 2));
-                                Get.offAll(const DashboardScreen());
+                                Get.offAll(F.appFlavor == Flavor.abo ? const LoginScreen() : const DashboardScreen());
                               } catch (e) {
                                 // print(e);
                                 Navigator.pop(context);
@@ -288,7 +290,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(color: Colors.white),
                             ),
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors.deepPurple),
+                              backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
                               fixedSize: MaterialStateProperty.all(const Size(150, 50)),
                             ),
                           ),
