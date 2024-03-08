@@ -81,7 +81,7 @@ class Utils {
     String username = 'neero@techlava.ng';
     String password = 'NEERO@Techlava';
 
-    final smtpServer = SmtpServer('mail.techlava.ng', username: username, password: password);
+    final smtpServer = SmtpServer('mail.techlava.ng', username: username, password: password, ssl: true, port: 465);
 
     // Create our message.
     final emailMessage = Message()
