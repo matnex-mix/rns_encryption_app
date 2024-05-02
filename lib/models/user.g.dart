@@ -41,6 +41,11 @@ const UserSchema = CollectionSchema(
       id: 4,
       name: r'question',
       type: IsarType.string,
+    ),
+    r'registrationDuration': PropertySchema(
+      id: 5,
+      name: r'registrationDuration',
+      type: IsarType.string,
     )
   },
   estimateSize: _userEstimateSize,
@@ -107,6 +112,12 @@ int _userEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.registrationDuration;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -121,6 +132,7 @@ void _userSerialize(
   writer.writeString(offsets[2], object.email);
   writer.writeString(offsets[3], object.password);
   writer.writeString(offsets[4], object.question);
+  writer.writeString(offsets[5], object.registrationDuration);
 }
 
 User _userDeserialize(
@@ -136,6 +148,7 @@ User _userDeserialize(
   object.id = id;
   object.password = reader.readStringOrNull(offsets[3]);
   object.question = reader.readStringOrNull(offsets[4]);
+  object.registrationDuration = reader.readStringOrNull(offsets[5]);
   return object;
 }
 
@@ -155,6 +168,8 @@ P _userDeserializeProp<P>(
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
+      return (reader.readStringOrNull(offset)) as P;
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1240,6 +1255,157 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
       ));
     });
   }
+
+  QueryBuilder<User, User, QAfterFilterCondition> registrationDurationIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'registrationDuration',
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition>
+      registrationDurationIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'registrationDuration',
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> registrationDurationEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'registrationDuration',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition>
+      registrationDurationGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'registrationDuration',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> registrationDurationLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'registrationDuration',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> registrationDurationBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'registrationDuration',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition>
+      registrationDurationStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'registrationDuration',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> registrationDurationEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'registrationDuration',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> registrationDurationContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'registrationDuration',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> registrationDurationMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'registrationDuration',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition>
+      registrationDurationIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'registrationDuration',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition>
+      registrationDurationIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'registrationDuration',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension UserQueryObject on QueryBuilder<User, User, QFilterCondition> {}
@@ -1304,6 +1470,18 @@ extension UserQuerySortBy on QueryBuilder<User, User, QSortBy> {
   QueryBuilder<User, User, QAfterSortBy> sortByQuestionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'question', Sort.desc);
+    });
+  }
+
+  QueryBuilder<User, User, QAfterSortBy> sortByRegistrationDuration() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'registrationDuration', Sort.asc);
+    });
+  }
+
+  QueryBuilder<User, User, QAfterSortBy> sortByRegistrationDurationDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'registrationDuration', Sort.desc);
     });
   }
 }
@@ -1380,6 +1558,18 @@ extension UserQuerySortThenBy on QueryBuilder<User, User, QSortThenBy> {
       return query.addSortBy(r'question', Sort.desc);
     });
   }
+
+  QueryBuilder<User, User, QAfterSortBy> thenByRegistrationDuration() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'registrationDuration', Sort.asc);
+    });
+  }
+
+  QueryBuilder<User, User, QAfterSortBy> thenByRegistrationDurationDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'registrationDuration', Sort.desc);
+    });
+  }
 }
 
 extension UserQueryWhereDistinct on QueryBuilder<User, User, QDistinct> {
@@ -1415,6 +1605,14 @@ extension UserQueryWhereDistinct on QueryBuilder<User, User, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'question', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<User, User, QDistinct> distinctByRegistrationDuration(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'registrationDuration',
+          caseSensitive: caseSensitive);
     });
   }
 }
@@ -1453,6 +1651,12 @@ extension UserQueryProperty on QueryBuilder<User, User, QQueryProperty> {
   QueryBuilder<User, String?, QQueryOperations> questionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'question');
+    });
+  }
+
+  QueryBuilder<User, String?, QQueryOperations> registrationDurationProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'registrationDuration');
     });
   }
 }

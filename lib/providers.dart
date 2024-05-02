@@ -12,3 +12,6 @@ final selectedModulosProvider = StateProvider<List<int>>((ref) => []);
 
 final generateDurationProvider = StateProvider<String?>((ref) => null);
 final validateDurationProvider = StateProvider<String?>((ref) => null);
+final passwordGenerationDurationProvider = StateProvider<String?>((ref) => null);
+final userRegistrationDurationProvider = StateProvider<String?>((ref) => null);
+final authenticationDurationProvider = StateProvider<String?>((ref) => null);

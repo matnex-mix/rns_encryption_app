@@ -23,6 +23,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
+  late DateTime start;
+
   final loginForm = GlobalKey<FormState>();
   final registrationForm = GlobalKey<FormState>();
 
@@ -41,6 +43,12 @@ class _LoginScreenState extends State<LoginScreen> {
   bool forForgotPassword = false;
 
   @override
+  void initState() {
+    start = DateTime.now();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: DefaultTabController(
@@ -55,6 +63,9 @@ class _LoginScreenState extends State<LoginScreen> {
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 bottom: TabBar(
+                  onTap: (index){
+                    start = DateTime.now();
+                  },
                   tabs: [
                     Tab(
                       text: 'Log In',
@@ -109,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () async {
                               forForgotPassword = false;
                               if( loginForm.currentState?.validate() != true ) return;
+                              start = DateTime.now();
 
                               Widgets.load();
 
@@ -122,6 +134,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Get.snackbar("Error", "Invalid credentials");
                                 Navigator.pop(context);
                               } else {
+                                // keep the registration time in memory
+                                providerContainer.read(userRegistrationDurationProvider.notifier).state = user.registrationDuration;
+                                // also store the current start time in user object so that we don't loose it
+                                user.registrationDuration = start.toIso8601String();
+
                                 providerContainer.read(loggedInUserProvider.notifier).state = user;
                                 Get.offAll(F.appFlavor == Flavor.abo ? const SelectModuloScreen() : const DashboardScreen());
                               }
@@ -264,6 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Widgets.load();
 
                               try {
+                                // metrics for User registration
                                 final user = User()
                                   ..email = registerEmail.text
                                   ..password = Utils.hashPassword(registerPassword.text)
@@ -274,6 +292,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 final userId = isar.writeTxnSync((){
                                   return isar.users.putSync(user);
                                 });
+
+                                // Record time taken for the registration process
+                                user.registrationDuration = Utils.getSeconds(DateTime.now().difference(start).inMicroseconds);
+                                isar.writeTxnSync(() => isar.users.putSync(user));
 
                                 if( F.appFlavor == Flavor.kola ) providerContainer.read(loggedInUserProvider.notifier).state = user..id = userId;
                                 await Future.delayed(const Duration(seconds: 1));

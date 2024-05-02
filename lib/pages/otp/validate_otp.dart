@@ -67,11 +67,12 @@ class _OTPValidationScreenState extends ConsumerState<OTPValidationScreen> {
                         final modulos = ref.watch(selectedModulosProvider);
                         final remainders = otp.text.split("|").map((e) => int.tryParse(e) ?? 0).toList();
                         final computedOTP = Utils.crt(remainders, modulos);
-
-                        providerContainer.read(validateDurationProvider.notifier).state = Utils.getSeconds(DateTime.now().difference(start).inMicroseconds);
-                        print(computedOTP);
+                        // print(computedOTP);
 
                         if( computedOTP == ref.watch(realOtpProvider) ){
+                          providerContainer.read(validateDurationProvider.notifier).state = Utils.getSeconds(DateTime.now().difference(start).inMicroseconds);
+                          providerContainer.read(authenticationDurationProvider.notifier).state = Utils.getSeconds(DateTime.now().difference(DateTime.parse(user!.registrationDuration!)).inMicroseconds);
+
                           Get.offAll(() => const DashboardScreen());
                           Get.snackbar("Success", "OTP validated!");
                         } else {

@@ -38,6 +38,7 @@ dependencies:
   tripledes_nullsafety: ^1.0.3
   excel: ^4.0.2
   percent_indicator: ^4.2.3
+  d_chart: ^2.6.9
 
 dev_dependencies:
   flutter_test:
