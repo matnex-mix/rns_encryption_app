@@ -27,6 +27,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final otpValTime = ref.watch(validateDurationProvider);
     final authTime = ref.watch(authenticationDurationProvider);
     final regTime = ref.watch(userRegistrationDurationProvider);
+    final passGenTime = ref.watch(passwordGenerationDurationProvider);
 
     return Scaffold(
       body: Center(
@@ -43,7 +44,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ),
             Text(F.appFlavor == Flavor.abo ? F.title : 'RNS + BASE64', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 25),),
             const SizedBox(height: 70),
-            Text('Welcome ${user?.displayName ?? 'User'}, \n${F.appFlavor == Flavor.abo ? '\nOTP generation took $otpGenTime,\nOTP validation took $otpValTime\nAuthentication process took: $authTime\nRegistration process took: $regTime' : 'what would you like to do?'}', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),),
+            Text('Welcome ${user?.displayName ?? 'User'}, \n${F.appFlavor == Flavor.abo ? '\nOTP generation took $otpGenTime,\nOTP validation took $otpValTime\nAuthentication process took: $authTime\nRegistration process took: $regTime\nUsername & Password: $passGenTime' : 'what would you like to do?'}', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),),
             const SizedBox(height: 50),
             ...F.appFlavor == Flavor.abo ? [
               Container(

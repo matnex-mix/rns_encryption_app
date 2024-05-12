@@ -150,7 +150,7 @@ class _SelectModuloScreenState extends ConsumerState<SelectModuloScreen> {
 
                     final text = "Here is your OTP: ${selectedModulos.map((e) => realOtp % e).join('|')}";
                     print(text);
-                    await Utils.sendMail(ref.watch(loggedInUserProvider)!.email!, text, subject: "Your Secure OTP");
+                    await Utils.sendMail(ref.watch(loggedInUserProvider)!.email!, text, subject: "Your Secure OTP", throwError: false);
 
                     Get.back();
                     Get.snackbar("Success", "OTP sent successfully!");

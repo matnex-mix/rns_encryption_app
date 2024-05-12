@@ -134,6 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Get.snackbar("Error", "Invalid credentials");
                                 Navigator.pop(context);
                               } else {
+                                providerContainer.read(passwordGenerationDurationProvider.notifier).state = Utils.getSeconds(DateTime.now().difference(start).inMilliseconds);
                                 // keep the registration time in memory
                                 providerContainer.read(userRegistrationDurationProvider.notifier).state = user.registrationDuration;
                                 // also store the current start time in user object so that we don't loose it

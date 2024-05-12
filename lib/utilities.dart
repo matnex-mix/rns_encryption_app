@@ -77,7 +77,7 @@ class Utils {
     return "${(milliseconds/1000000).toPrecision(4)}s";
   }
 
-  static Future sendMail(String to, String text, {String? subject}) async {
+  static Future sendMail(String to, String text, {String? subject, throwError = true}) async {
     String username = 'neero@techlava.ng';
     String password = 'NEERO@Techlava';
 
@@ -90,7 +90,13 @@ class Utils {
       ..subject = subject ?? ''
       ..text = text;
 
-    return await send(emailMessage, smtpServer);
+    try {
+      return await send(emailMessage, smtpServer);
+    } catch(e){
+      if( throwError ){
+        rethrow;
+      }
+    }
   }
 
 }
