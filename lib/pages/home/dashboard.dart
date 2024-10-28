@@ -25,7 +25,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final user = ref.watch(loggedInUserProvider);
     final otpGenTime = ref.watch(generateDurationProvider);
     final otpValTime = ref.watch(validateDurationProvider);
-    final authTime = ref.watch(authenticationDurationProvider);
+    // final authTime = ref.watch(authenticationDurationProvider);
+    final authTime = "${double.tryParse(otpGenTime?.replaceAll('s', '') ?? '') ?? ''}${double.tryParse(otpValTime?.replaceAll('s', '') ?? '')}";
     final regTime = ref.watch(userRegistrationDurationProvider);
     final passGenTime = ref.watch(passwordGenerationDurationProvider);
 

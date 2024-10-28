@@ -279,6 +279,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () async {
                               if( registrationForm.currentState?.validate() != true ) return;
 
+                              start = DateTime.now();
+
                               Widgets.load();
 
                               try {

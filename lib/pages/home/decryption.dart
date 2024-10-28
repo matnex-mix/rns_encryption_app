@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sms_advanced/sms_advanced.dart';
 
 import '../../src/rust/api/simple.dart';
+import '../../utilities.dart';
 import '../../widgets.dart';
 
 class DecryptionScreen extends StatefulWidget {
@@ -24,6 +25,7 @@ class _DecryptionScreenState extends State<DecryptionScreen> {
   var key = TextEditingController();
   var cipher = TextEditingController();
   var message = TextEditingController();
+  String? timeTaken;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,8 @@ class _DecryptionScreenState extends State<DecryptionScreen> {
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Message',
-                    fillColor: Colors.grey
+                    fillColor: Colors.grey,
+                    counterText: timeTaken != null ? 'Time Taken: $timeTaken' : null
                   ),
                   readOnly: true,
                   controller: message,
@@ -76,14 +79,18 @@ class _DecryptionScreenState extends State<DecryptionScreen> {
                 TextButton(
                   onPressed: () async {
                     if( formKey.currentState?.validate() != true ) return;
+                    DateTime timeStart = DateTime.now();
 
                     Widgets.load(dismissible: false);
 
                     try {
                       final plaintext = decrypt(key: key.text, ciphertext: cipher.text);
-                      formKey.currentState?.reset();
+                      // formKey.currentState?.reset();
                       message.text = plaintext;
+                      timeTaken = Utils.getSeconds(DateTime.now().difference(timeStart).inMicroseconds);
+                      setState((){});
                     } on Exception catch (e) {
+                      // throw e;
                       Get.snackbar("Error", "An error occurred, Please try again");
                     } finally {
                       Navigator.pop(context);

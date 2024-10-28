@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:encryption_demo2/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 // import 'package:flutter_sms/flutter_sms.dart';
@@ -24,6 +25,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   var key = TextEditingController();
   var cipher = TextEditingController();
   var message = TextEditingController();
+  String? timeTaken;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                   decoration: InputDecoration(
                     hintText: 'Cipher Text',
                     fillColor: Colors.grey,
-                    counterText: cipher.text.length > 0 ? 'Memory Size: ${cipher.text.length} bytes' : null,
+                    counterText: cipher.text.length > 0 ? 'Memory Size: ${cipher.text.length} bytes${timeTaken != null ? '\nTime Taken: $timeTaken' : ''}' : null,
                   ),
                   controller: cipher,
                   keyboardType: TextInputType.text,
@@ -83,12 +85,16 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                   onPressed: () async {
                     if( formKey.currentState?.validate() != true ) return;
 
+                    DateTime timeStart = DateTime.now();
+
                     Widgets.load(dismissible: false);
 
                     try {
                       final ciphertext = encrypt(key: key.text, message: message.text);
                       formKey.currentState?.reset();
                       cipher.text = ciphertext;
+                      timeTaken = Utils.getSeconds(DateTime.now().difference(timeStart).inMicroseconds);
+                      setState((){});
                     } on Exception catch (e) {
                       Get.snackbar("Error", "An error occurred, Please try again");
                     } finally {
